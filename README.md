@@ -1,0 +1,1 @@
+Promowanie urzązeń mobilnych 
