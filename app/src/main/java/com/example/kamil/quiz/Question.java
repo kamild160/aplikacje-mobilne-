@@ -2,6 +2,12 @@ package com.example.kamil.quiz;
 
 public class Question {
     private int mTextResId ;
+    private boolean mAnswerTrue;
+
+    public  Question(int question, boolean trueQuestion){
+        mTextResId=question;
+        mAnswerTrue=trueQuestion;
+    }
 
     public int getTextResId() {
         return mTextResId;
@@ -19,9 +25,6 @@ public class Question {
         mAnswerTrue = answerTrue;
     }
 
-    private boolean mAnswerTrue;
-    public  Question(int question, boolean trueQuestion){
-        mTextResId=question;
-        mAnswerTrue=trueQuestion;
-    }
+
+
 }

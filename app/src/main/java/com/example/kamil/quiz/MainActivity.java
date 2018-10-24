@@ -1,9 +1,12 @@
 package com.example.kamil.quiz;
 
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,12 +14,32 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mTrueButton;  /*klasy przycisków*/
+    private Button mTrueButton;
     private Button mFalseButton;
-    private Button mNextButton;
+    private ImageButton mNextButton;
+    private ImageButton mPreviousButton;
     private TextView mQuestionTextView;
 
 
+
+    private void updateNext(){
+        mCurrentIndex=(mCurrentIndex+1) % mQuestionsBank.length;
+        int question = mQuestionsBank[mCurrentIndex].getTextResId();
+        mQuestionTextView.setText(question);
+    }
+
+    private void updatePrevious(){
+        if(mCurrentIndex>0)
+        {
+            mCurrentIndex = (mCurrentIndex - 1);
+            ;
+        }
+       else {
+            mCurrentIndex=mQuestionsBank.length-1;
+        };
+        updateQuestion();
+
+    }
     private Question[] mQuestionsBank= new Question[]{
 
             //pobiera kolejno pytania ze stringów wraz z zadeklarowaną watorćią czy zdanie jest prawdziwe czy nie
@@ -44,8 +67,10 @@ public class MainActivity extends AppCompatActivity {
             messageResId=R.string.incorrect;
         }
 
-        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show(); // wyświetla toast z informacją o poprawności odpowiedzi
 
+        Toast toast = Toast.makeText(this,messageResId, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP,0, 10);
+        toast.show();
     }
 
     @Override
@@ -53,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mQuestionTextView=(TextView) findViewById(R.id.text);
+        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateNext();
+
+
+            }
+        });
 
 
         mFalseButton=(Button)findViewById(R.id.false_button); //szuka przycisku false
@@ -71,15 +104,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mNextButton = (Button) findViewById(R.id.next);
+        mNextButton = (ImageButton)findViewById(R.id.next);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndex=(mCurrentIndex+1) % mQuestionsBank.length;  //umożliwia zmianę ptania na następne
-               updateQuestion();
+                updateNext();  //umożliwia zmianę ptania na następne
+
+            }
+        });
+        mPreviousButton = (ImageButton)findViewById(R.id.previous);
+        mPreviousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatePrevious();
+
             }
         });
         updateQuestion();
     }
 }
-

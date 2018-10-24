@@ -3,6 +3,7 @@
     <string name="true_button">Prawda</string>
     <string name="false_button">Fałsz</string>
     <string name="next">Następne pytanie</string>
+    <string name="previous">Poprzedne pytanie</string>
     <string name="correct">Poprawna odpowiedź !</string>
     <string name="incorrect">Odpowiedź błędna !</string>
 
