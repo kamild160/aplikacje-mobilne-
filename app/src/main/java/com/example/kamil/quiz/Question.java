@@ -3,13 +3,17 @@ package com.example.kamil.quiz;
 public class Question {
     private int mTextResId ;
     private boolean mAnswerTrue;
+    private boolean mIsAnswered ;
+
 
     public  Question(int question, boolean trueQuestion){
         mTextResId=question;
         mAnswerTrue=trueQuestion;
-    }
+        mIsAnswered=false;
 
-    public int getTextResId() {
+
+    }
+     public int getTextResId() {
         return mTextResId;
     }
 
@@ -26,5 +30,13 @@ public class Question {
     }
 
 
+    public boolean getAnserwedQuestion() {
+        return mIsAnswered;
+    }
 
+    public void setAnsweredQuestion(boolean isAnswered) {
+        mIsAnswered = isAnswered;
+    }
 }
+
+
