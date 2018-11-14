@@ -1,5 +1,7 @@
 package com.example.kamil.quiz;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.media.FaceDetector;
 import android.media.Image;
 import android.support.v4.content.res.TypedArrayUtils;
@@ -26,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
     private int mCurrentIndex=0;
     private int mCorrectanswers=0;
+    private Button  cheat;
+    private int REQUEST_CODE_CHEAT = 0;
+    private boolean mIscheater;
+
+
     private Question[] mQuestionsBank= new Question[]{
             //pobiera kolejno pytania ze stringów wraz z zadeklarowaną watorćią czy zdanie jest prawdziwe czy nie
             new Question(R.string.question1, true),
@@ -73,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         mCurrentIndex=(mCurrentIndex+1) % mQuestionsBank.length;
         int question = mQuestionsBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
+        mIscheater=false;
         updateQuestion();
     }
 
@@ -85,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
        else {
             mCurrentIndex=mQuestionsBank.length-1;
         }
+        mIscheater=false;
         updateQuestion();
 
     }
@@ -105,17 +114,21 @@ public class MainActivity extends AppCompatActivity {
         int messageResId=0;
         boolean answerIsTrue= mQuestionsBank[mCurrentIndex].isAnswerTrue();
 
+         if(mIscheater){
+             messageResId=R.string.cheater;
+         } else {
 
-        if (userPressedTrue == answerIsTrue){
-            messageResId=R.string.correct;
-            mCorrectanswers+=1;
+
+             if (userPressedTrue == answerIsTrue) {
+                 messageResId = R.string.correct;
+                 mCorrectanswers += 1;
 
 
-        } else {
-            messageResId = R.string.incorrect;
+             } else {
+                 messageResId = R.string.incorrect;
 
-        }
-
+             }
+         }
         Toast toast = Toast.makeText(this,messageResId, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP,0, 10);
         toast.show();
@@ -165,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         mQuestionTextView=(TextView) findViewById(R.id.text);
@@ -229,14 +241,37 @@ public class MainActivity extends AppCompatActivity {
         });
         mPreviousButton = (ImageButton)findViewById(R.id.previous);
         mPreviousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatePrevious();
+                    @Override
+                    public void onClick(View v) {
+                        updatePrevious();
                 buttons();
 
 
             }
         });
+        cheat=(Button)findViewById(R.id.cheatbutton);
+        cheat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean answeredIsTrue=mQuestionsBank[mCurrentIndex].isAnswerTrue();
+                Intent i = com.example.kamil.quiz.cheat.nowe(MainActivity.this,answeredIsTrue);
+                startActivityForResult(i,REQUEST_CODE_CHEAT);
+
+
+            }
+        });
+
         updateQuestion();
     }
-}
+     @Override
+           protected void onActivityResult(int requestCode, int resultcode, Intent data){
+              if(resultcode != Activity.RESULT_OK){
+              return;
+              }
+              if(requestCode==REQUEST_CODE_CHEAT){
+                  if(data==null){
+                      return;
+                  }
+                   mIscheater= com.example.kamil.quiz.cheat.wasAnswerShown(data);
+              }
+     }}

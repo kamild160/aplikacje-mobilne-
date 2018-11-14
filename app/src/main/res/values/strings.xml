@@ -7,12 +7,15 @@
     <string name="correct">Poprawna odpowiedź !</string>
     <string name="incorrect">Odpowiedź błędna !</string>
     <string name="end">Gratulacje, liczba poprawinych opdowiedzi to : </string>
+    <string name="cheatbutton">Podpowiedź</string>
+    <string name="show">Pokaż odpowiedź </string>
+    <string name="cheater">Nie ładnie oszukiwać </string>
+    <string name="example">Czy napewno chcesz zobaczyć odpowiedź ?</string>
 
-//pytania
+    //pytania
     <string name="question1">Android 9.0 jest najnowszą wersją Andorida</string>
     <string name="question2">Najnowszą wersjią IOS jest 11.0 </string>
     <string name="question3">J.K. Rowling napisała tylko 7 książek</string>
-
 
 
 </resources>
