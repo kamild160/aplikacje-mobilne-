@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private int mCorrectanswers=0;
     private Button  cheat;
 
+    private final int Tokenmax=2;
+    private int Usedtokens;
 
     private final String CHANNEL_ID = "CHANNEL_IDCHANNEL_IDCHANNEL_ID";
 
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private final String GIVEN_ANSWERS_STATE = "GIVEN_ANSWERS_STATE";
     private final String CURRENT_INDEX_STATE = "CURRENT_INDEX_STATE";
     private final String USED_CHEATS_STATE = "USED_CHEATS_STATE";
+    private final String TOKENS_USED_STATE = "TOKENS_USED_STATE";
 
     public static final int REQUEST_CODE_CHEAT = 0;
     private boolean[] givenAnswers;
@@ -119,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
         mTrueButton.setEnabled(true);
         mFalseButton.setEnabled(true);
     }
+    private void updateCheatButtonVisibility() {
+        if (Usedtokens ==Tokenmax){
+            cheat.setVisibility(View.INVISIBLE);
+        }
+        else{
+            cheat.setVisibility(View.VISIBLE);
+        }
+    }
 
     //sprawdza czy wybrana odpoweidź jest prawdzwa
 
@@ -139,8 +150,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         givenAnswers = new boolean[mQuestionsBank.length];
         usedCheats = new boolean[mQuestionsBank.length];
+        Usedtokens=0;
 
         mQuestionTextView=(TextView) findViewById(R.id.text);
         mQuestionTextView.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         cheat=(Button)findViewById(R.id.cheatbutton);
         cheat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
 
         updateQuestion();
@@ -259,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             usedCheats[mCurrentIndex] = com.example.kamil.quiz.cheat.wasAnswerShown(data);
+            Usedtokens++;
+            updateCheatButtonVisibility();
         }
 
         updateQuestion();
@@ -271,6 +289,8 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt(POINTS_STATE,mCorrectanswers);
         outState.putBooleanArray(GIVEN_ANSWERS_STATE,givenAnswers);
         outState.putBooleanArray(USED_CHEATS_STATE,usedCheats);
+        outState.putInt(TOKENS_USED_STATE,Usedtokens);
+
         super.onSaveInstanceState(outState);
     }
 
@@ -282,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
         mCurrentIndex = savedInstanceState.getInt(CURRENT_INDEX_STATE);
         mCorrectanswers = savedInstanceState.getInt(POINTS_STATE);
         givenAnswers = savedInstanceState.getBooleanArray(GIVEN_ANSWERS_STATE);
+        Usedtokens=savedInstanceState.getInt(TOKENS_USED_STATE);
         usedCheats = savedInstanceState.getBooleanArray(USED_CHEATS_STATE);
         updateQuestion();
     }}

@@ -1,12 +1,21 @@
 package com.example.kamil.quiz;
-
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class cheat extends AppCompatActivity {
 
@@ -15,7 +24,9 @@ public class cheat extends AppCompatActivity {
     private Button cheatbutton;
     private TextView podpoweidz;
     private boolean mAnswerIsTrue;
+    private TextView mAPITextView;
     private boolean ismAnswerShown = false;
+    private final String CHANNEL_ID = "CHANNEL_IDCHANNEL_IDCHANNEL_ID";
 
     private static final String EXTRA_ANSWER_IS_TRUE =
             "quiz.answer_is_true";
@@ -44,6 +55,9 @@ public class cheat extends AppCompatActivity {
 
 
         mAnswerIsTrue=getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE,false);
+        mAPITextView = (TextView) findViewById(R.id.mApiTextView);
+        mAPITextView.setText("Wersja Api: " + Build.VERSION.SDK_INT);
+
 
         podpoweidz=(TextView)findViewById(R.id.podpoweidź);
 
@@ -79,14 +93,14 @@ public class cheat extends AppCompatActivity {
         ismAnswerShown = savedInstanceState.getBoolean(KEY_IS_CHEATER);
         if (ismAnswerShown){
             showAnswer();
-
-
         }
     super.onRestoreInstanceState(savedInstanceState);
     }
+
     public static boolean wasAnswerShown(Intent result) {
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
     }
+
 }
 
 
