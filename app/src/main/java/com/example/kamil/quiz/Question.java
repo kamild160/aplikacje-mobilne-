@@ -3,8 +3,8 @@ package com.example.kamil.quiz;
 public class Question {
     private int mTextResId ;
     private boolean mAnswerTrue;
-    private boolean mIsAnswered ;
-
+   private boolean mIsAnswered ;
+    public boolean mIsCheater;
 
     public  Question(int question, boolean trueQuestion){
         mTextResId=question;
